@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=460">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>清颜镜 · 精进版交互原型</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{min-height:100%}
 body{background:
   radial-gradient(circle at 50% 0%,rgba(255,255,255,0.55),transparent 34%),
   linear-gradient(180deg,#E6E0D8 0%,#D6CFC6 100%);
@@ -22,6 +23,11 @@ body{background:
 .pscroll::-webkit-scrollbar{display:none}
 .pscroll{scrollbar-width:none;-ms-overflow-style:none}
 button{cursor:pointer;font-family:inherit;border:none;background:none}
+@media (max-width:520px){
+  html,body,#root{width:100%;height:100%;overflow:hidden}
+  body{display:block;padding:0;background:#FAF6F1}
+  .page-title{display:none}
+}
 </style>
 </head>
 <body>
@@ -240,6 +246,16 @@ const ATLAS=[
 /* ── IOS FRAME ───────────────────────────── */
 function IosFrame({children,dark=false,time='9:41',bat=88}){
   const W=393,H=852,ink=dark?'#fff':'#000';
+  const isMobile=window.matchMedia('(max-width: 520px)').matches;
+  if(isMobile){
+    return(
+      <div style={{position:'relative',width:'100vw',height:'100dvh',minHeight:'100vh',overflow:'hidden',background:dark?'#000':'#fff'}}>
+        <div className="pscroll" style={{position:'absolute',inset:0,overflow:'auto',WebkitOverflowScrolling:'touch'}}>
+          {children}
+        </div>
+      </div>
+    );
+  }
   return(
     <div style={{display:'inline-block',padding:12,background:'#111',borderRadius:60,
       boxShadow:'0 0 0 1.5px #2a2a2a,0 40px 90px rgba(0,0,0,0.3)'}}>
